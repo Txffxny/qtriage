@@ -1,0 +1,17 @@
+{
+  "floor": 0.001597444089456869,
+  "n_cal": 625,
+  "calibration_file": "Monday-WorkingHours.csv",
+  "window": "5min",
+  "unit": "src",
+  "min_batch": 5,
+  "q_levels": [
+    0.01,
+    0.05,
+    0.1,
+    0.2,
+    0.3
+  ],
+  "attempted_policy": "exclude",
+  "n_cal_hosts": 16
+}
