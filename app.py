@@ -10,20 +10,16 @@ is below it.
 """
 import json
 import pathlib
-import sys
-
-sys.path.append(str(pathlib.Path(__file__).resolve().parent))
 
 import numpy as np
 import pandas as pd
 import streamlit as st
 
-from src import config
-
 st.set_page_config(page_title="qtriage", layout="wide")
 
-ALERTS = config.PROCESSED / "alerts.parquet"
-META = config.PROCESSED / "alerts_meta.json"
+HERE = pathlib.Path(__file__).resolve().parent
+ALERTS = HERE / "alerts.parquet"
+META = HERE / "alerts_meta.json"
 
 
 @st.cache_data
@@ -38,7 +34,7 @@ def load():
 df, meta = load()
 
 if df is None:
-    st.error("No alert export found. Run `python scripts/export_alerts.py` first.")
+    st.error("alerts.parquet not found next to app.py.")
     st.stop()
 
 # ---------------------------------------------------------------- sidebar

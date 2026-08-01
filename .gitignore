@@ -4,3 +4,6 @@ __pycache__/
 data/
 figures/
 .env
+
+alerts.parquet
+alerts_meta.json
