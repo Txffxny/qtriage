@@ -123,7 +123,7 @@ st.dataframe(
         {"dst_port_entropy": "{:.2f}", "top_port_share": "{:.2f}",
          "rst_rate": "{:.2f}", "n_flows": "{:,.0f}"}
     ),
-    use_container_width=True, height=420,
+    width='stretch', height=420,
 )
 st.caption(
     "Green: certified and genuinely malicious. Red: certified but benign — a "
@@ -135,15 +135,11 @@ st.subheader("Evidence")
 e1, e2 = st.columns(2)
 
 with e1:
-    st.caption("p-value distribution — malicious vs benign")
-    hist = pd.DataFrame({
-        "log10(p)": np.log10(np.clip(d["p_value"], 1e-8, 1)),
-        "class": np.where(d["is_attack"], "malicious", "benign"),
-    })
-    st.bar_chart(
-        hist.groupby(["class", pd.cut(hist["log10(p)"], bins=20, observed=False)],
-                     observed=False).size().unstack(0).fillna(0)
-    )
+    st.caption("Alert composition at the selected q")
+    comp = pd.DataFrame({
+        "count": [tp, fp, len(d) - n_cert],
+    }, index=["certified · attack", "certified · benign", "uncertified"])
+    st.bar_chart(comp)
 
 with e2:
     st.caption("Volume reduction across q")
@@ -154,7 +150,7 @@ with e2:
         rows.append({"q": qq, "alerts": len(sel),
                      "true": int(sel["is_attack"].sum()),
                      "false": len(sel) - int(sel["is_attack"].sum())})
-    st.dataframe(pd.DataFrame(rows).set_index("q"), use_container_width=True)
+    st.dataframe(pd.DataFrame(rows).set_index("q"), width='stretch')
 
 # ---------------------------------------------------------------- caveats
 with st.expander("What this dashboard does not claim"):
